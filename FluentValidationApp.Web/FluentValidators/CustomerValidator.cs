@@ -6,6 +6,7 @@ using System;
 
 namespace FluentValidationApp.Web.FluentValidators
 {
+    // Daha fazla için FluentValidation dökümanına git webden
     public class CustomerValidator : AbstractValidator<Customer>
     {
         public string NotEmptyMessage { get; } = "{PropertyName} cannot be empty";
@@ -20,6 +21,8 @@ namespace FluentValidationApp.Web.FluentValidators
             }).WithMessage("You must be over 18 years old");
 
             RuleForEach(x => x.Adresses).SetValidator(new AddressValidator());
+
+            RuleFor(x => x.Gender).IsInEnum().WithMessage("{PropertyName} Male=1 Woman=2 Should be");
         }
     }
 }

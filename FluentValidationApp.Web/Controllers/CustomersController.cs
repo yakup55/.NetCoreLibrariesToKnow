@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using FluentValidationApp.Web.Models;
 using FluentValidation;
 using FluentValidationApp.Web.FluentValidators;
+using Microsoft.AspNetCore.Routing;
 
 namespace FluentValidationApp.Web.Controllers
 {
@@ -20,6 +21,7 @@ namespace FluentValidationApp.Web.Controllers
             customervalidator = validator;
             _context = context;
         }
+
 
         // GET: Customers
         public async Task<IActionResult> Index()

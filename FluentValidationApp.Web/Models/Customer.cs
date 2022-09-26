@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace FluentValidationApp.Web.Models
 {
@@ -9,5 +11,8 @@ namespace FluentValidationApp.Web.Models
         public string Mail { get; set; }
         public int Age { get; set; }
         public DateTime?  BirthDay { get; set; }
+
+        //Customer.Address[1].Id
+        public IList<Address> Adresses { get; set; }
     }
 }

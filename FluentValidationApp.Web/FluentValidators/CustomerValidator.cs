@@ -8,7 +8,7 @@ namespace FluentValidationApp.Web.FluentValidators
 {
     public class CustomerValidator : AbstractValidator<Customer>
     {
-        public string NotEmptyMessage { get; } = "{ProperyName} cannot be empty";
+        public string NotEmptyMessage { get; } = "{PropertyName} cannot be empty";
         public CustomerValidator()
         {
             RuleFor(x => x.Name).NotEmpty().WithMessage(NotEmptyMessage);
@@ -18,6 +18,8 @@ namespace FluentValidationApp.Web.FluentValidators
             {
                 return DateTime.Now.AddYears(-18)>=x;
             }).WithMessage("You must be over 18 years old");
+
+            RuleForEach(x => x.Adresses).SetValidator(new AddressValidator());
         }
     }
 }

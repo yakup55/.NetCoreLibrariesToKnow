@@ -1,6 +1,7 @@
 using AspNetCoreRateLimit;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -28,10 +29,15 @@ namespace RateLimit.API
         {
             services.AddOptions();
             services.AddMemoryCache();
-            services.Configure<IpRateLimitOptions>(Configuration.GetSection("IpRateLimiting"));
-            services.Configure<IpRateLimitPolicies>(Configuration.GetSection("IpRateLimitPolicies"));
-            services.AddSingleton<IIpPolicyStore,MemoryCacheIpPolicyStore>();
 
+            services.Configure<ClientRateLimitOptions>(Configuration.GetSection("ClientRateLimiting"));
+            services.Configure<ClientRateLimitPolicies>(Configuration.GetSection("ClientRateLimitPolicies"));
+
+            services.AddSingleton<IClientPolicyStore,MemoryCacheClientPolicyStore>();
+
+            services.AddSingleton<IRateLimitCounterStore, MemoryCacheRateLimitCounterStore>();
+            services.AddSingleton<IHttpContextAccessor,HttpContextAccessor>();
+            services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
 
             services.AddControllers();
         }
@@ -43,6 +49,8 @@ namespace RateLimit.API
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseClientRateLimiting();
 
             app.UseHttpsRedirection();
 
